@@ -1,21 +1,24 @@
 'use strict'
+
 // =======================
-// Dependencies
+// Dependencies imports
 // =======================
 const express = require('express');
 const cors = require('cors');
+
 // =======================
-// Import of routes
+// Development imports
 // =======================
 
 // =======================
-// Our dependencies
+// Routes imports
 // =======================
+const userRoutes = require('./src/routes/user');
 
 const app = express();
 
 // =======================
-// Middleware
+// Middlewares
 // =======================
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -26,11 +29,11 @@ app.use(express.urlencoded({extended: false}));
 app.use(cors());
 
 // =======================
-// Use of routes
+// Use of Routes
 // =======================
-
+app.use('/v1',userRoutes);
 
 // =======================
-// Export of app
+// Export app
 // =======================
 module.exports = app;

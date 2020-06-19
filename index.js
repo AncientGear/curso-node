@@ -1,23 +1,14 @@
 'use strict'
-require('dotenv').config();
-require('./config/config');
 const mongoose = require('mongoose');
 
 const app = require('./app');
-const optionsMongo = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}
 
-mongoose.connect(process.env.DB_URL, optionsMongo,(err) => {
-    if(err) throw new Error('Cannot connect to the database');
+const optionsMongo = {useNewUrlParser: true, useUnifiedTopology: true}
 
-    console.log('Connection succesfully');
-    try{
-        app.listen(process.env.PORT, () => {
-            console.log('Server running');
-        });
-    } catch(err) {
-        throw new Error(err);
-    }
-});
+mongoose.connect('mongodb://localhost:27017/curso', optionsMongo ,(err) => {
+    if(err) throw err;
+
+    app.listen(3000, () => {
+        console.log('Server running');
+    });
+})
