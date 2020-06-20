@@ -1,13 +1,15 @@
 'use strict'
+require('./config/env');
 const mongoose = require('mongoose');
 
 const app = require('./app');
 
 const optionsMongo = {useNewUrlParser: true, useUnifiedTopology: true}
 
-mongoose.connect('mongodb://localhost:27017/curso', optionsMongo ,(err) => {
+mongoose.connect(process.env.URLDB, optionsMongo ,(err) => {
     if(err) throw err;
-
+    console.log('Conectado');
+    
     app.listen(3000, () => {
         console.log('Server running');
     });

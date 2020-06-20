@@ -14,6 +14,7 @@ const cors = require('cors');
 // Routes imports
 // =======================
 const userRoutes = require('./src/routes/user');
+const productoRoutes = require('./src/routes/productos');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(cors());
 // Use of Routes
 // =======================
 app.use('/v1',userRoutes);
+app.use('/v1', productoRoutes);
 
 // =======================
 // Export app

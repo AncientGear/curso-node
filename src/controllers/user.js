@@ -1,5 +1,7 @@
 'use strict'
 
+const { generarToken } = require('../utils/generateToken');
+
 const UsersModel = require('../models/user');
 
 const createUser = async (req, res) => {
@@ -116,9 +118,55 @@ const deleteUser = (req, res) => {
     })
 }
 
+const login = (req, res) => {
+    const body = req.body;
+    console.log(body);
+    
+    const email = body.email;
+    const password = body.password;
+
+    UsersModel.findOne({email}, (err, user) => {
+        if(!user) {
+            return res.status(401).send({
+                status: true,
+                message: '{Usuario} o contraseña incorrectos'
+            })
+        }
+
+        if(err) {
+            return res.status(500).send({
+                status: false,
+                message: 'Internal Server Error.'
+            })
+        }
+
+        if(password !== user.password) {
+            return res.status(401).send({
+                status: true,
+                message: '{Usuario} o contraseña incorrectos'
+            })
+        }
+
+        const datos = {
+            email: user.email,
+            id: user._id,
+            role: user.role
+        }
+
+        const token = generarToken(datos);
+
+        return res.status(200).send({
+            status: true,
+            token,
+            usuario: user
+        })
+    })
+}
+
 module.exports = {
     createUser,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    login
 }
