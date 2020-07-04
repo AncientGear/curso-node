@@ -1,6 +1,7 @@
 'use strict'
 
 const { generarToken } = require('../utils/generateToken');
+const { generarHash } = require('../utils/generarHash');
 
 const UsersModel = require('../models/user');
 
@@ -11,9 +12,16 @@ const createUser = async (req, res) => {
 
     user.name = body.name;
     user.email = body.email;
-    user.password = body.password;
+    user.password = await generarHash(body.password);
 
-    await user.save();
+    try{
+        await user.save();
+    } catch(err){
+        return res.status(500).send({
+            status: false,
+            message: 'User cannot be created'
+        })
+    }
 
     res.send({
         user,
@@ -120,8 +128,7 @@ const deleteUser = (req, res) => {
 
 const login = (req, res) => {
     const body = req.body;
-    console.log(body);
-    
+
     const email = body.email;
     const password = body.password;
 
@@ -143,7 +150,7 @@ const login = (req, res) => {
         if(password !== user.password) {
             return res.status(401).send({
                 status: true,
-                message: '{Usuario} o contraseña incorrectos'
+                message: 'Usuario o {contraseña} incorrectos'
             })
         }
 

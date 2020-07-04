@@ -10,7 +10,6 @@ const generarToken = (datos) => {
         expiresIn: '2h',
         algorithm: 'HS256'
     });
-
     return token;
 }
 
